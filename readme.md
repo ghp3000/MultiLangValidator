@@ -1,5 +1,5 @@
 
-
+本项目是基于github.com/go-playground/validator/v10的改进和包装
 ``` go
 	v := validator.NewMultiLangValidator(validator.LocaleZh)
 	if err := v.Register(validator.LocaleZh, "zh.txt"); err != nil {

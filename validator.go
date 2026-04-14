@@ -1,4 +1,4 @@
-package validator
+package MultiLangValidator
 
 import (
 	"errors"
@@ -37,7 +37,7 @@ func (e ValidatError) Error() string {
 	return e.Err
 }
 
-type MultiLangValidator struct {
+type Validator struct {
 	validate    *validator.Validate
 	uni         *ut.UniversalTranslator
 	transMap    map[string]ut.Translator
@@ -45,8 +45,8 @@ type MultiLangValidator struct {
 }
 
 // NewMultiLangValidator 新建实例,指定默认语言
-func NewMultiLangValidator(defaultLang Locale) *MultiLangValidator {
-	m := &MultiLangValidator{
+func NewMultiLangValidator(defaultLang Locale) *Validator {
+	m := &Validator{
 		validate:    validator.New(),
 		transMap:    make(map[string]ut.Translator),
 		defaultLang: string(defaultLang),
@@ -56,7 +56,7 @@ func NewMultiLangValidator(defaultLang Locale) *MultiLangValidator {
 }
 
 // Register 注册新的语言,不需要字段名翻译的fieldFilename置为空
-func (v *MultiLangValidator) Register(locale Locale, fieldFilename string) error {
+func (v *Validator) Register(locale Locale, fieldFilename string) error {
 	var t locales.Translator
 	var tr TranslationInf
 	var translatorName string
@@ -100,7 +100,7 @@ func (v *MultiLangValidator) Register(locale Locale, fieldFilename string) error
 }
 
 // Validate 校验并返回遇到的第一个错误,指定的语言不存在的时使用默认语言
-func (v *MultiLangValidator) Validate(data interface{}, lang string) *ValidatError {
+func (v *Validator) Validate(data interface{}, lang string) *ValidatError {
 	trans, ok := v.transMap[lang]
 	if !ok {
 		trans = v.transMap[v.defaultLang]
@@ -131,7 +131,7 @@ func (v *MultiLangValidator) Validate(data interface{}, lang string) *ValidatErr
 }
 
 // Validates 校验并返回遇到的全部错误,指定的语言不存在的时使用默认语言
-func (v *MultiLangValidator) Validates(data interface{}, lang string) []ValidatError {
+func (v *Validator) Validates(data interface{}, lang string) []ValidatError {
 	trans, ok := v.transMap[lang]
 	if !ok {
 		trans = v.transMap[v.defaultLang]
