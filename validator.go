@@ -44,8 +44,8 @@ type Validator struct {
 	defaultLang string
 }
 
-// NewMultiLangValidator 新建实例,指定默认语言
-func NewMultiLangValidator(defaultLang Locale) *Validator {
+// NewValidator 新建实例,指定默认语言
+func NewValidator(defaultLang Locale) *Validator {
 	m := &Validator{
 		validate:    validator.New(),
 		transMap:    make(map[string]ut.Translator),
