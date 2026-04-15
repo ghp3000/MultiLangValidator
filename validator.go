@@ -28,6 +28,11 @@ const (
 	LocaleZhTw Locale = "zh_tw"
 )
 
+// SupportedLocales 返回全部支持的语言
+func SupportedLocales() []Locale {
+	return []Locale{LocaleEn, LocaleZh, LocaleZhTw}
+}
+
 type ValidatError struct {
 	Field string
 	Err   string
@@ -97,6 +102,15 @@ func (v *Validator) Register(locale Locale, fieldFilename string) error {
 	}
 	v.transMap[string(locale)] = trans
 	return nil
+}
+
+// Locales 取得当前已注册的翻译器列表
+func (v *Validator) Locales() []string {
+	var strs []string
+	for k, _ := range v.transMap {
+		strs = append(strs, k)
+	}
+	return strs
 }
 
 // Validate 校验并返回遇到的第一个错误,指定的语言不存在的时使用默认语言
